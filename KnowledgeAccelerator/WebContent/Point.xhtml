@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<style type="text/css">
+.ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell
+	{
+	text-align: center;
+}
+
+.customPanelGrid .ui-panelgrid-content {
+	align-items: center;
+}
+</style>
+
+<h:body>
+
+	<h:panelGrid id="panelgriddashboard" columns="2" layout="flex"
+		styleClass="showcase-text-align-center">
+		<h:panelGrid id="panelgrid" rows="1" style="width:50px">
+			<h:form id="form-internal">
+				<p:panel id="panel" header="Please provide X and Y values (at least 40)!">
+
+					<h:panelGrid id="input-panelgrid" columns="3" cellpadding="1">
+						<p:outputLabel value="X: " />
+						<p:inputText id="input-X" value="#{pointBean.inputX}"
+							required="true" label="X-value">
+							<f:validateDoubleRange minimum="40" />
+							<p:ajax update="msgX" event="keyup" />
+						</p:inputText>
+						<p:message for="input-X" id="msgX" display="icon" />
+
+						<p:outputLabel value="Y: " />
+						<p:inputText id="input-Y" value="#{pointBean.inputY}"
+							required="true" label="Y-value">
+							<f:validateDoubleRange minimum="40" />
+							<p:ajax update="msgY" event="keyup" />
+						</p:inputText>
+						<p:message for="input-Y" id="msgY" display="icon" />
+
+					</h:panelGrid>
+
+					<p:commandButton value="Add Input" action="#{pointBean.addInput}"
+						update=":points-list" />
+				</p:panel>
+			</h:form>
+
+			<p:dataTable id="points-list" var="point" value="#{pointBean.points}">
+				<p:column headerText="X">
+					<h:outputText value="#{point.x}" />
+				</p:column>
+				<p:column headerText="Y">
+					<h:outputText value="#{point.y}" />
+				</p:column>
+			</p:dataTable>
+			<p:commandButton value="Show Chart" action="#{pointBean.showChart}"
+				update=":points-chart" />
+
+		</h:panelGrid>
+
+		<p:scatterChart id="points-chart" model="#{chartJsView.scatterModel}"
+			style="width:800px" />
+	</h:panelGrid>
+
+</h:body>
+</html>
